@@ -1,13 +1,19 @@
-function createCourseRoutes(app){
-    app.post("/course/purchase" , (req,res)=>{
+const {Router} = require("express")
+const CourseRoter = Router()
 
+    CourseRoter.post("/purchase" , (req,res)=>{
+        res.json({
+          message : 'course endpoint'
+        })
     })
     
-    app.get("/courses/preview" , (req,res)=>{
-        
+    CourseRoter.get("/preview" , (req,res)=>{
+      res.json({
+        message : 'course endpoint'
+      })
     })
-}
+
 
 module.exports = {
-    createCourseRoutes : createCourseRoutes 
+  CourseRoter : CourseRoter
 }
