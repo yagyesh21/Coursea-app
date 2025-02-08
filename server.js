@@ -1,9 +1,11 @@
 const express = require("express");
 const app= express()
 const mongoose = require("mongoose")
+mongoose.connect("mongodb+srv://yagyesh21:yagyesh12345@cluster21.gsya3.mongodb.net/CourseSellingDB")
 const {userRouter} = require("./routes/user.js")
 const {CourseRoter} = require("./routes/course.js")
 const {AdminRouter}  =require("./routes/admin.js")
+
 // app.use(express.json())
 
 // any req coming to /user will be handle by userRouter
