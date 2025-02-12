@@ -4,7 +4,7 @@ const ObjectId = mongoose.ObjectId
 
 
 const UsersSchema = new Schema({
-   _id :ObjectId,
+   id : ObjectId,
    email : {type : String, unique : true},
    password : String,
    firstName : String,
@@ -13,7 +13,7 @@ const UsersSchema = new Schema({
 })
 
 const CourseSchema = new Schema({
-    _id :ObjectId,
+    id :ObjectId,
     title : String,
     description : String,
     price  : Number,
@@ -22,7 +22,7 @@ const CourseSchema = new Schema({
  })
 
  const AdminSchema = new Schema({
-    _id :ObjectId,
+    id :ObjectId,
     email : String,
     password  : String,
     firstName  : String,
@@ -31,18 +31,18 @@ const CourseSchema = new Schema({
  })
 
  const PurchaseSchema= new Schema({
-     _id : ObjectId, 
+     id : ObjectId, 
      Course_id : ObjectId,
      Users_id : ObjectId
  })
 
  const UserModel = mongoose.model ("User", UsersSchema)
- const CourseModel = mongoose.model ("Course", CourseModel)
- const AdminModel = mongoose.model ("Admin", AdminModel)
- const PurchaseModel = mongoose.model ("Purchase", PurchaseSchema)
+ const CourseModel= mongoose.model ("Course", CourseSchema)
+ const AdminModel = mongoose.model ("Admin", AdminSchema)
+ const PurchaseModel= mongoose.model ("Purchase", PurchaseSchema)
 
  module.exports = {
-    UserModel  :UserModel,
+    UserModel :UserModel,
     CourseModel : CourseModel,
     AdminModel : AdminModel,
     PurchaseModel : PurchaseModel

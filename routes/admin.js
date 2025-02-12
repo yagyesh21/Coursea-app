@@ -1,6 +1,6 @@
 const {Router} = require("express");
 const AdminRouter = Router()
-
+const {AdminSchema} = require("../db.js")
 AdminRouter.post("/signup" , (req,res)=>{
     res.json({
         message : 'you are signed up' 
