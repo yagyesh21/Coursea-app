@@ -5,7 +5,7 @@ const ObjectId = mongoose.ObjectId
 
 const UsersSchema = new Schema({
    id : ObjectId,
-   email : {type : String, unique : true},
+   gmail : {type : String , unique : true},
    password : String,
    firstName : String,
    lastName : String
@@ -23,7 +23,7 @@ const CourseSchema = new Schema({
 
  const AdminSchema = new Schema({
     id :ObjectId,
-    email : String,
+    gmail : {type : String , unique : true},
     password  : String,
     firstName  : String,
     lastName : String

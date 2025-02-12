@@ -1,63 +1,49 @@
-const express = require("express");
 const {Router} = require("express")
-const {UserModel} = require("../db.js")
 const userRouter = Router()
+const {UserModel} = require("../db.js")
 const jwt = require("jsonwebtoken")
-const JWT_Secret = "gg12345ok"
-
-userRouter.use(express.json())
+require("dotenv").config()
 // User Signup route handle
     userRouter.post("/signup" ,async(req,res)=>{
-        const gmail = req.body.gmail
-        const firstName = req.body.firstName
-        const lastName = req.body.lastName;
-        const password = req.body.password
+     const {gmail, firstName, lastName, password}= req.body
 
-     const user = await UserModel.create({
-            gmail ,
-            firstName ,
-            lastName ,
-            password 
-        })
-            res.json({
-                message : "you are signed up"
-            })
-    })
-
-    function Auth(req,res,next){
-        const firstName= req.body.firstName;
-        const lastName = req.body.lastName;
-        const password =req.body.password;
-
-        const usercheck = UserModel.findOne({
-            firstName : firstName, 
-            lastName : lastName , 
-            password :password
-        })
-        if(!usercheck){
-            res.status(403).json({
-                message : "InValid username or password"  
-            })
-        } else{
-            next()
-        }
-    }
-    
-   userRouter.post("/login" , Auth,(req,res)=>{
-            const firstName = req.body.firstName;
-            const lastName = req.body.lastName;
-            const usertoken = jwt.sign(firstName + lastName ,JWT_Secret)
-        
-    res.json({
-        message : usertoken
-    })
-    })
-    
-    userRouter.get("/purchases" , (req,res)=>{
+   const user = await UserModel.create({
+        gmail : gmail,
+        firstName: firstName,
+        lastName : lastName,
+        password : password
+      })
+      
+      if(user){
         res.json({
-            message : "you are logged in"
+            message : "you are signed up"
         })
+      }
+
     })
+
+    
+   userRouter.post("/signin",async(req,res)=>{
+    const {gmail, password} = req.body;
+    const userchecker = await UserModel.findOne({
+        gmail : gmail,
+        password : password
+    })
+    if(userchecker){
+  const token =jwt.sign({
+            id : userchecker._id
+        },process.env.JWT_USER_PASSWORD)
+
+        res.json({
+            token : token
+        })
+    }else{
+        res.status(403).json({
+            message :"Incorrect credentials"
+        })
+    }
+
+   })
 
 
 module.exports = {
