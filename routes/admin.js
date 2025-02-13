@@ -1,7 +1,9 @@
 const {Router} = require("express");
 const AdminRouter = Router()
 const {AdminModel} = require("../db.js")
+const {CourseModel}= require("../db.js")
 const jwt = require("jsonwebtoken")
+const adminMiddleware = require("../middleware/admin.js")
 
 AdminRouter.post("/signup" , async(req,res)=>{
     const {gmail, firstName , lastName , password} = req.body
@@ -46,11 +48,19 @@ if(!admincheck){
 
 })
 
-AdminRouter.put("/signup" , (req,res)=>{
-    res.json({
-        message : 'you are signed up' 
-    })
+AdminRouter.post("/course" ,adminMiddleware, async(req,res)=>{
+const adminId = req.userId;
 
+const {title, description, imageUrl} = req.body;
+
+await CourseModel.create({
+    title,description ,imageUrl , price , creatorID :adminId
+})  
+
+res.json({
+    message : "Course created",
+    courseId : course.id
+})
 })
 
 AdminRouter.get("/signup" , (req,res)=>{
