@@ -12,7 +12,7 @@ const UsersSchema = new Schema({
 
 })
 
-const CourseSchema = new Schema({
+const courseSchema = new Schema({
     id :ObjectId,
     title : String,
     description : String,
@@ -37,13 +37,13 @@ const CourseSchema = new Schema({
  })
 
  const UserModel = mongoose.model ("User", UsersSchema)
- const CourseModel= mongoose.model ("Course", CourseSchema)
+ const courseModel= mongoose.model ("Course", courseSchema)
  const AdminModel = mongoose.model ("Admin", AdminSchema)
  const PurchaseModel= mongoose.model ("Purchase", PurchaseSchema)
 
  module.exports = {
     UserModel :UserModel,
-    CourseModel : CourseModel,
+   courseModel :courseModel,
     AdminModel : AdminModel,
     PurchaseModel : PurchaseModel
  }

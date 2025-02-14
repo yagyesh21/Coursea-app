@@ -1,9 +1,9 @@
-const jwt = reqiure("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 require("dotenv").config()
 
-function adminMiddleware(res,req,next){
+function adminMiddleware(req,res,next){
  const token  =req.headers.token;
-const decoded = jwt.vertify(token,process.env.JWT_ADMIN_PASSWORD )
+const decoded = jwt.verify(token, process.env.JWT_ADMIN_PASSWORD )
 
 if(decoded){
     req.userId = decoded.id;
@@ -15,6 +15,5 @@ if(decoded){
 }
 }
 
-module.exports ={
-   adminMiddleware : adminMiddleware
-}
+module.exports =
+   adminMiddleware 

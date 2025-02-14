@@ -1,11 +1,13 @@
 const {Router} = require("express");
-const AdminRouter = Router()
+const adminRouter = Router()
+
 const {AdminModel} = require("../db.js")
-const {CourseModel}= require("../db.js")
+const {courseModel}= require("../db.js")
+
 const jwt = require("jsonwebtoken")
 const adminMiddleware = require("../middleware/admin.js")
 
-AdminRouter.post("/signup" , async(req,res)=>{
+adminRouter.post("/signup" , async(req,res)=>{
     const {gmail, firstName , lastName , password} = req.body
 
     const admin =  await AdminModel.create({
@@ -23,7 +25,7 @@ AdminRouter.post("/signup" , async(req,res)=>{
 
 })
 
-AdminRouter.post("/signin",async (req,res)=>{
+adminRouter.post("/signin",async (req,res)=>{
 const {gmail , password} = req.body
 
 const admincheck = await AdminModel.findOne({
@@ -48,32 +50,67 @@ if(!admincheck){
 
 })
 
-AdminRouter.post("/course" ,adminMiddleware, async(req,res)=>{
+// creating a course
+adminRouter.post("/course",adminMiddleware, async(req,res)=>{
+// userID is updated in adminMiddlware
 const adminId = req.userId;
 
-const {title, description, imageUrl} = req.body;
+const {title, description, imageUrl, price} = req.body;
 
-await CourseModel.create({
-    title,description ,imageUrl , price , creatorID :adminId
-})  
+const course = await courseModel.create({
+    title :title,
+    description: description ,
+    imageUrl:imageUrl,
+ price: price, 
+ creatorID :adminId
+}) 
 
 res.json({
     message : "Course created",
-    courseId : course.id
-})
+    courseId : course._id
 })
 
-AdminRouter.get("/signup" , (req,res)=>{
-    res.json({
-        message : 'you are signed up' 
+})
+
+
+adminRouter.put("/signup" ,adminMiddleware,  async(req,res)=>{
+    const adminId = req.userId;
+
+    const { title, description , imageUrl, price, courseId } = req.body;
+
+// checking if courseID belong's to admin 
+   const course =  await courseModel.updateOne({
+    _id : courseId,
+    creatorID : adminId
+   },{ 
+    title : title,
+        description :description,
+        imageUrl : imageUrl,
+        price : price, 
+        creatorID :adminId
     })
 
+  res.json({
+        message : "course updated",
+        courseId : course._id
+
+})
 })
 
+adminRouter.get("/course/bulk", adminMiddleware, async(req,res)=>{
+    const adminId =req.userId;
+
+    const course = await courseModel.find({
+        creatorID : adminId
+    })
+
+    res.json({
+        message : "Course updated", 
+        course
+    })
+})
 
 module.exports = {
-    AdminRouter : AdminRouter
-}
-
-
-
+    adminRouter: adminRouter
+ };
+ 
